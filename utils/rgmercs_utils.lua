@@ -3366,7 +3366,6 @@ function RGMercUtils.OkToEngage(autoTargetId)
 
     if not config.DoAutoEngage then return false end
     local target = mq.TLO.Target
-    local assistId = RGMercUtils.GetMainAssistId()
 
     if not target() or target.Dead() then return false end
 
@@ -3407,7 +3406,7 @@ function RGMercUtils.OkToEngage(autoTargetId)
                 RGMercsLogger.log_verbose(
                     "\ag  OkayToEngage(%s) %d < %d and %d < %d or Tanking or %d == %d --> \agOK To Engage!",
                     RGMercUtils.GetTargetCleanName(),
-                    RGMercUtils.GetTargetDistance(), config.AssistRange, RGMercUtils.GetTargetPctHPs(), config.AutoAssistAt, assistId,
+                    RGMercUtils.GetTargetDistance(), config.AssistRange, RGMercUtils.GetTargetPctHPs(), config.AutoAssistAt, RGMercUtils.GetMainAssistId(),
                     mq.TLO.Me.ID())
             end
             return true
