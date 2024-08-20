@@ -3487,7 +3487,7 @@ end
 function RGMercUtils.NeedBuff(spell)
     if not spell or not spell() then return false end
 
-    return RGMercUtils.TargetNeedBuff(spell, mq.TLO.Me)
+    return RGMercUtils.TargetNeedsBuff(spell, mq.TLO.Me)
 end
 
 ---@param buffName string
