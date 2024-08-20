@@ -891,7 +891,7 @@ local _ClassConfig = {
                 type = "Item",
                 active_cond = function(self)
                     local item = mq.TLO.Me.Inventory("Chest")
-                    return item() and RGMercUtils.TargetHasBuff(item.Spell, mq.TLO.Me)
+                    return item() and RGMercUtils.BuffActive(item.Spell)
                 end,
                 cond = function(self)
                     local item = mq.TLO.Me.Inventory("Chest")
@@ -939,7 +939,7 @@ local _ClassConfig = {
                 type = "Item",
                 active_cond = function(self)
                     local item = mq.TLO.Me.Inventory("Charm")
-                    return item() and RGMercUtils.TargetHasBuff(item.Spell, mq.TLO.Me)
+                    return item() and RGMercUtils.BuffActive(item.Spell)
                 end,
                 cond = function(self)
                     local item = mq.TLO.Me.Inventory("Charm")
@@ -1146,7 +1146,7 @@ local _ClassConfig = {
                 type = "Spell",
                 tooltip = Tooltips.Torrent,
                 cond = function(self, spell)
-                    return RGMercUtils.GetSetting('DoTorrent') and RGMercUtils.SpellLoaded(spell) and not RGMercUtils.TargetHasBuff(spell)
+                    return RGMercUtils.GetSetting('DoTorrent') and RGMercUtils.SpellLoaded(spell) and RGMercUtils.TargetNeedsBuff(spell)
                 end,
             },
             {

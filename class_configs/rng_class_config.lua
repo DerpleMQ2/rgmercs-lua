@@ -958,10 +958,10 @@ local _ClassConfig = {
                 name = "Wildstalker's Unity (Azia)",
                 type = "AA",
                 tooltip = Tooltips.UnityBuff,
-                active_cond = function(self, aaName) return RGMercUtils.TargetHasBuff(mq.TLO.Me.AltAbility(aaName).Spell, mq.TLO.Me) end,
+                active_cond = function(self, aaName) return RGMercUtils.BuffActive(mq.TLO.Me.AltAbility(aaName).Spell) end,
                 cond = function(self, aaName)
                     return castWSU() and not RGMercUtils.SpellStacksOnMe(mq.TLO.Me.AltAbility(aaName).Spell) and
-                        not RGMercUtils.TargetHasBuff(mq.TLO.Me.AltAbility(aaName).Spell, mq.TLO.Me)
+                        RGMercUtils.TargetNeedsBuff(mq.TLO.Me.AltAbility(aaName).Spell, mq.TLO.Me)
                 end,
             },
             {
@@ -1180,7 +1180,7 @@ local _ClassConfig = {
                 active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
                 cond = function(self, spell, target)
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return RGMercUtils.SpellStacksOnTarget(spell) and not RGMercUtils.TargetHasBuff(spell) and not RGMercUtils.TargetHasBuffByName("Shared " .. spell.Name())
+                    return RGMercUtils.SpellStacksOnTarget(spell) and RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.TargetNeedsBuffByName("Shared " .. spell.Name())
                 end,
             },
         },

@@ -744,7 +744,7 @@ return {
                 name = "Mana Burn",
                 type = "AA",
                 cond = function(self)
-                    return not RGMercUtils.TargetHasBuffByName("Mana Burn") and RGMercUtils.GetSetting('DoManaBurn')
+                    return RGMercUtils.TargetNeedsBuffByName("Mana Burn") and RGMercUtils.GetSetting('DoManaBurn')
                 end,
             },
             {
@@ -928,7 +928,7 @@ return {
                 name = "VortexNuke",
                 type = "Spell",
                 cond = function(self, spell)
-                    return not RGMercUtils.TargetHasBuff(spell)
+                    return RGMercUtils.TargetNeedsBuff(spell)
                 end,
             },
             {

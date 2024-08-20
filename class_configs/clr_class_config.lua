@@ -817,7 +817,7 @@ local _ClassConfig = {
                     local spell = mq.TLO.AltAbility(aaName).Spell
                     return RGMercUtils.GetMainAssistPctHPs() <= RGMercUtils.GetSetting('GroupHealPoint') and RGMercUtils.GetSetting('DoHOT') and
                         RGMercUtils.SpellStacksOnTarget(spell) and
-                        not RGMercUtils.TargetHasBuff(spell) and (mq.TLO.Group.Injured(RGMercUtils.GetSetting('GroupHealPoint'))() or 0) > RGMercUtils.GetSetting('GroupInjureCnt')
+                        RGMercUtils.TargetNeedsBuff(spell) and (mq.TLO.Group.Injured(RGMercUtils.GetSetting('GroupHealPoint'))() or 0) > RGMercUtils.GetSetting('GroupInjureCnt')
                 end,
             },
             {
@@ -829,7 +829,7 @@ local _ClassConfig = {
                     local spell = mq.TLO.AltAbility(aaName).Spell
                     return RGMercUtils.GetMainAssistPctHPs() <= RGMercUtils.GetSetting('GroupHealPoint') and RGMercUtils.GetSetting('DoHOT') and
                         RGMercUtils.SpellStacksOnTarget(spell) and
-                        not RGMercUtils.TargetHasBuff(spell) and (mq.TLO.Group.Injured(RGMercUtils.GetSetting('GroupHealPoint'))() or 0) > RGMercUtils.GetSetting('GroupInjureCnt')
+                        RGMercUtils.TargetNeedsBuff(spell) and (mq.TLO.Group.Injured(RGMercUtils.GetSetting('GroupHealPoint'))() or 0) > RGMercUtils.GetSetting('GroupInjureCnt')
                 end,
             },
             {
@@ -840,7 +840,7 @@ local _ClassConfig = {
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return RGMercUtils.GetMainAssistPctHPs() <= RGMercUtils.GetSetting('GroupHealPoint') and RGMercUtils.GetSetting('DoHOT') and
                         RGMercUtils.SpellStacksOnTarget(spell) and
-                        not RGMercUtils.TargetHasBuff(spell) and (mq.TLO.Group.Injured(RGMercUtils.GetSetting('GroupHealPoint'))() or 0) > RGMercUtils.GetSetting('GroupInjureCnt')
+                        RGMercUtils.TargetNeedsBuff(spell) and (mq.TLO.Group.Injured(RGMercUtils.GetSetting('GroupHealPoint'))() or 0) > RGMercUtils.GetSetting('GroupInjureCnt')
                 end,
             },
             {
@@ -869,7 +869,7 @@ local _ClassConfig = {
                 cond = function(self, spell)
                     return RGMercUtils.GetMainAssistPctHPs() <= RGMercUtils.GetSetting('GroupHealPoint') and RGMercUtils.GetSetting('DoHOT') and
                         RGMercUtils.SpellStacksOnTarget(spell) and
-                        not RGMercUtils.TargetHasBuff(spell) and (mq.TLO.Group.Injured(RGMercUtils.GetSetting('GroupHealPoint'))() or 0) > RGMercUtils.GetSetting('GroupInjureCnt')
+                        RGMercUtils.TargetNeedsBuff(spell) and (mq.TLO.Group.Injured(RGMercUtils.GetSetting('GroupHealPoint'))() or 0) > RGMercUtils.GetSetting('GroupInjureCnt')
                 end,
             },
         },
@@ -1151,7 +1151,7 @@ local _ClassConfig = {
                 type = "Spell",
                 cond = function(self, spell)
                     return RGMercUtils.CanUseAA('Spirit Mastery') and not RGMercUtils.AuraActiveByName(spell.BaseName()) and not RGMercUtils.AuraActiveByName("Reverent Aura") and
-                    RGMercUtils.SpellStacksOnMe(spell)
+                        RGMercUtils.SpellStacksOnMe(spell)
                 end,
             },
             {

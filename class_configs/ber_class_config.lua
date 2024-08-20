@@ -679,7 +679,7 @@ return {
                 type = "AA",
                 cond = function(self, aaName)
                     return RGMercUtils.GetSetting('DoAlliance') and RGMercUtils.CanAlliance() and
-                        not RGMercUtils.TargetHasBuff(mq.TLO.AltAbility(aaName).Spell)
+                        RGMercUtils.TargetNeedsBuff(mq.TLO.AltAbility(aaName).Spell)
                 end,
             },
             {

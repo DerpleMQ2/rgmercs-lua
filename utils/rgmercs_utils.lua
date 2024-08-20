@@ -1721,14 +1721,33 @@ end
 ---@return boolean
 function RGMercUtils.DotSpellCheck(hpStopDots, spell)
     if not spell or not spell() then return false end
-    return not RGMercUtils.TargetHasBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell) and RGMercUtils.GetTargetPctHPs() > hpStopDots
+    return RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell) and RGMercUtils.GetTargetPctHPs() > hpStopDots
 end
 
 ---@param spell MQSpell
 ---@return boolean
 function RGMercUtils.DetSpellCheck(spell)
     if not spell or not spell() then return false end
-    return not RGMercUtils.TargetHasBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell)
+    return RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell)
+end
+
+---@param spell MQSpell
+---@param buffTarget (target|spawn|character|fun():string|nil)?
+---@return boolean
+function RGMercUtils.TargetNeedsBuff(spell, buffTarget)
+    ---@type target|spawn|character|fun():string|nil
+    local target = mq.TLO.Target
+
+    if buffTarget ~= nil and buffTarget.ID() > 0 then
+        target = buffTarget
+    end
+
+    if not spell or not spell() then return false end
+    if not target or not target() then return false end
+
+    if not target.BuffsPopulated() then return false end
+
+    return RGMercUtils.TargetNeedsBuff(spell, target)
 end
 
 ---@param spell MQSpell
@@ -1774,6 +1793,8 @@ function RGMercUtils.SpellStacksOnTarget(spell)
     if not spell or not spell() then return false end
     if not target or not target() then return false end
 
+    if not target.BuffsPopulated() then return false end
+
     local numEffects = spell.NumEffects()
 
     if not spell.StacksTarget() then return false end
@@ -1805,6 +1826,15 @@ function RGMercUtils.SpellStacksOnMe(spell)
     end
 
     return true
+end
+
+---@param buffName string
+---@param buffTarget (target|spawn|character|fun():string|nil)?
+---@return boolean
+function RGMercUtils.TargetNeedsBuffByName(buffName, buffTarget)
+    if buffName == nil then return false end
+    if buffTarget and buffTarget() and not buffTarget.BuffsPopulated() then return false end
+    return not RGMercUtils.TargetHasBuff(mq.TLO.Spell(buffName), buffTarget)
 end
 
 ---@param buffName string
@@ -2318,7 +2348,7 @@ end
 function RGMercUtils.DebuffSong(songSpell)
     if not songSpell or not songSpell() then return false end
     local me = mq.TLO.Me
-    local res = me.Gem(songSpell.Name()) and not RGMercUtils.TargetHasBuff(songSpell)
+    local res = me.Gem(songSpell.Name()) and RGMercUtils.TargetNeedsBuff(songSpell)
     RGMercsLogger.log_verbose("\ayBuffSong(%s) => memed(%s), targetHas(%s) --> result(%s)", songSpell.Name(),
         RGMercUtils.BoolToColorString(me.Gem(songSpell.Name())() ~= nil),
         RGMercUtils.BoolToColorString(RGMercUtils.TargetHasBuff(songSpell)), RGMercUtils.BoolToColorString(res))
@@ -3542,7 +3572,7 @@ function RGMercUtils.DetAACheck(aaId)
     if RGMercUtils.GetTargetID() == 0 then return false end
     local me = mq.TLO.Me
 
-    return (not RGMercUtils.TargetHasBuff(me.AltAbility(aaId).Spell) and
+    return (RGMercUtils.TargetNeedsBuff(me.AltAbility(aaId).Spell) and
         RGMercUtils.SpellStacksOnTarget(me.AltAbility(aaId).Spell))
 end
 

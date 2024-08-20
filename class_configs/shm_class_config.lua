@@ -758,7 +758,7 @@ local _ClassConfig = {
 
                     return (target and target.PctHPs() or 100) <= RGMercUtils.GetSetting('MainHealPoint') and
                         RGMercUtils.GetSetting('DoHOT') and RGMercUtils.SpellStacksOnTarget(spell) and
-                        not RGMercUtils.TargetHasBuff(spell)
+                        RGMercUtils.TargetNeedsBuff(spell)
                 end,
             },
             {
@@ -788,7 +788,7 @@ local _ClassConfig = {
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return RGMercUtils.GetSetting('DoHOT') and RGMercUtils.SpellStacksOnTarget(spell) and
-                        not RGMercUtils.TargetHasBuff(spell)
+                        RGMercUtils.TargetNeedsBuff(spell)
                 end,
             },
         },
@@ -810,7 +810,7 @@ local _ClassConfig = {
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return RGMercUtils.SpellStacksOnTarget(spell) and not RGMercUtils.TargetHasBuff(spell)
+                    return RGMercUtils.SpellStacksOnTarget(spell) and RGMercUtils.TargetNeedsBuff(spell)
                 end,
             },
             {
@@ -827,7 +827,7 @@ local _ClassConfig = {
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return RGMercUtils.GetSetting('DoHOT') and RGMercUtils.SpellStacksOnTarget(spell) and
-                        not RGMercUtils.TargetHasBuff(spell)
+                        RGMercUtils.TargetNeedsBuff(spell)
                 end,
             },
             {
@@ -1046,7 +1046,7 @@ local _ClassConfig = {
 
                     if not aaSpell or not aaSpell() then return false end
 
-                    return RGMercUtils.GetSetting('DoMalo') and RGMercUtils.DetSpellCheck(aaSpell) and not RGMercUtils.TargetHasBuff(aaSpell)
+                    return RGMercUtils.GetSetting('DoMalo') and RGMercUtils.DetSpellCheck(aaSpell) and RGMercUtils.TargetNeedsBuff(aaSpell)
                 end,
             },
             {
@@ -1084,7 +1084,7 @@ local _ClassConfig = {
                 type = "AA",
                 cond = function(self, aaName)
                     return RGMercUtils.GetSetting('DoSlow') and RGMercUtils.GetTargetPctHPs() >= 1 and
-                        not RGMercUtils.TargetHasBuffByName(mq.TLO.Spell("Turgur's Swarm").Trigger(1).RankName.Name())
+                        RGMercUtils.TargetNeedsBuffByName(mq.TLO.Spell("Turgur's Swarm").Trigger(1).RankName.Name())
                 end,
             },
             {
@@ -1261,8 +1261,8 @@ local _ClassConfig = {
             {
                 name = "Epic",
                 type = "Item",
-                cond = function(self) 
-                    return true 
+                cond = function(self)
+                    return true
                 end,
             },
             {
@@ -1422,7 +1422,7 @@ local _ClassConfig = {
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return RGMercUtils.GetSetting('DoGrowth') and RGMercUtils.TargetClassIs("WAR", target)
-                        and not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.SpellStacksOnTarget(spell)
+                        and RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
             {
@@ -1432,7 +1432,7 @@ local _ClassConfig = {
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return RGMercUtils.TargetClassIs({ "WAR", "PAL", "SHD", }, target) and
-                        not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.SpellStacksOnTarget(spell)
+                        RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
             {
@@ -1442,7 +1442,7 @@ local _ClassConfig = {
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return mq.TLO.Me.Level() <= 85 and RGMercUtils.TargetClassIs({ "WAR", "PAL", "SHD", }, target) and
-                        not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.GetSetting('DoStatBuff') and
+                        RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.GetSetting('DoStatBuff') and
                         RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
@@ -1454,7 +1454,7 @@ local _ClassConfig = {
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return mq.TLO.Me.Level() <= 85 and
                         RGMercUtils.TargetClassIs({ "WAR", "PAL", "SHD", "ROG", "MNK", "BER", "RNG", "BST", }, target) and
-                        not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.GetSetting('DoStatBuff') and
+                        RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.GetSetting('DoStatBuff') and
                         RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
@@ -1466,7 +1466,7 @@ local _ClassConfig = {
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return mq.TLO.Me.Level() <= 85 and (spell.Level() or 0) >= 71 and
                         RGMercUtils.TargetClassIs({ "WAR", "PAL", "SHD", "ROG", "MNK", "BER", "RNG", "BST", }, target) and
-                        not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.GetSetting('DoStatBuff') and
+                        RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.GetSetting('DoStatBuff') and
                         RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
@@ -1478,7 +1478,7 @@ local _ClassConfig = {
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return mq.TLO.Me.Level() <= 85 and
                         RGMercUtils.TargetClassIs({ "WAR", "PAL", "SHD", "ROG", "MNK", "BER", "RNG", "BST", }, target) and
-                        not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.GetSetting('DoStatBuff') and
+                        RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.GetSetting('DoStatBuff') and
                         RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
@@ -1490,7 +1490,7 @@ local _ClassConfig = {
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return mq.TLO.Me.Level() <= 85 and
                         RGMercUtils.TargetClassIs({ "WAR", "PAL", "SHD", "ROG", "MNK", "BER", "RNG", "BST", }, target) and
-                        not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.GetSetting('DoStatBuff') and
+                        RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.GetSetting('DoStatBuff') and
                         RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
@@ -1502,7 +1502,7 @@ local _ClassConfig = {
                     if (spell and spell() and ((spell.TargetType() or ""):lower() ~= "single")) then return false end
 
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.SpellStacksOnTarget(spell)
+                    return RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
             {
@@ -1519,7 +1519,7 @@ local _ClassConfig = {
 
                     return focusLevelPass and
                         RGMercUtils.TargetClassIs({ "WAR", "PAL", "SHD", "ROG", "MNK", "BER", "RNG", "BST", }, target) and
-                        not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.GetSetting('DoHaste') and RGMercUtils.SpellStacksOnTarget(spell)
+                        RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.GetSetting('DoHaste') and RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
             {
@@ -1529,8 +1529,8 @@ local _ClassConfig = {
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return RGMercUtils.GetSetting('DoRunSpeed') and not RGMercUtils.TargetHasBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell) and
-                        not RGMercUtils.CanUseAA("Lupine Spirit") and not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.TargetIsType("PC", target)
+                    return RGMercUtils.GetSetting('DoRunSpeed') and RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell) and
+                        not RGMercUtils.CanUseAA("Lupine Spirit") and RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.TargetIsType("PC", target)
                 end,
             },
             {
@@ -1547,7 +1547,7 @@ local _ClassConfig = {
                     RGMercUtils.SetTarget(target.ID() or 0)
 
                     return RGMercUtils.GetSetting('DoRunSpeed') and RGMercUtils.TargetIsType("PC", target) and RGMercUtils.CanUseAA(aaName) and
-                        not RGMercUtils.TargetHasBuff(speedSpell) and RGMercUtils.SpellStacksOnTarget(speedSpell)
+                        RGMercUtils.TargetNeedsBuff(speedSpell) and RGMercUtils.SpellStacksOnTarget(speedSpell)
                 end,
             },
         },

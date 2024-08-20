@@ -1006,7 +1006,9 @@ local _ClassConfig = {
                     if not RGMercUtils.GetSetting('DoNDTBuff') or not RGMercUtils.CastReady(spell.RankName) then return false end
                     --Single target versions of the spell will only be used on Melee, group versions will be cast if they are missing from any groupmember
                     if (spell and spell() and ((spell.TargetType() or ""):lower() ~= "group v2"))
-                        and not RGMercConfig.Constants.RGMelee:contains(target.Class.ShortName()) then return false end
+                        and not RGMercConfig.Constants.RGMelee:contains(target.Class.ShortName()) then
+                        return false
+                    end
 
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return RGMercUtils.CheckPCNeedsBuff(spell, target.ID(), target.CleanName()) and RGMercUtils.SpellStacksOnTarget(spell)
@@ -1022,7 +1024,7 @@ local _ClassConfig = {
                     if not RGMercConfig.Constants.RGTank:contains(target.Class.ShortName()) then return false end
                     --TODO: Fix this, TargetHasBuff is a bandaid, spamcasting on tank without it even though we are using CheckPCNeedsBuff
                     return RGMercUtils.CheckPCNeedsBuff(spell, target.ID(), target.CleanName()) and RGMercUtils.ReagentCheck(spell)
-                        and not RGMercUtils.TargetHasBuff(spell, target)
+                        and RGMercUtils.TargetNeedsBuff(spell, target)
                 end,
             },
             {

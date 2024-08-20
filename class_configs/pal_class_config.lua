@@ -69,15 +69,15 @@ return {
         },
         ["HealNuke"] = {
             -- Timer 7 - HealNuke
-            "Glorious Vindication",     -- Level 85
-            "Glorious Exoneration",     -- Level 90
-            "Glorious Exculpation",     -- Level 95
-            "Glorious Expurgation",     -- Level 100
-            "Brilliant Vindication",    -- Level 105
-            "Brilliant Exoneration",    -- Level 110
-            "Brilliant Exculpation",    -- Level 115
-            "Brilliant Acquittal",      -- Level 120
-            "Brilliant Denouncement",   -- Level 125
+            "Glorious Vindication",   -- Level 85
+            "Glorious Exoneration",   -- Level 90
+            "Glorious Exculpation",   -- Level 95
+            "Glorious Expurgation",   -- Level 100
+            "Brilliant Vindication",  -- Level 105
+            "Brilliant Exoneration",  -- Level 110
+            "Brilliant Exculpation",  -- Level 115
+            "Brilliant Acquittal",    -- Level 120
+            "Brilliant Denouncement", -- Level 125
         },
         ["TempHP"] = {
             "Steely Stance",
@@ -1037,7 +1037,7 @@ return {
                 name = "Challengetaunt",
                 type = "Spell",
                 cond = function(self, spell)
-                    return RGMercUtils.PCSpellReady(spell) and not RGMercUtils.TargetHasBuff(spell)
+                    return RGMercUtils.PCSpellReady(spell) and RGMercUtils.TargetNeedsBuff(spell)
                 end,
             },
             {
@@ -1169,7 +1169,7 @@ return {
                 type = "Spell",
                 cond = function(self, spell)
                     return RGMercUtils.PCSpellReady(spell) and
-                        ((RGMercUtils.TargetBodyIs(mq.TLO.Target, "Undead") or mq.TLO.Me.Level() >= 96) and not RGMercUtils.TargetHasBuff(spell) and RGMercUtils.GetSetting('DoNuke'))
+                        ((RGMercUtils.TargetBodyIs(mq.TLO.Target, "Undead") or mq.TLO.Me.Level() >= 96) and RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.GetSetting('DoNuke'))
                 end,
             },
             {
@@ -1183,7 +1183,7 @@ return {
                 name = "Reverseds",
                 type = "Spell",
                 cond = function(self, spell)
-                    return RGMercUtils.PCSpellReady(spell) and RGMercUtils.TargetHasBuff(spell) and RGMercUtils.GetSetting('DoReverseDS')
+                    return RGMercUtils.PCSpellReady(spell) and RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.GetSetting('DoReverseDS')
                 end,
             },
             {

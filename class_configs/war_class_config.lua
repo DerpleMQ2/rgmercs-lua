@@ -569,7 +569,7 @@ local _ClassConfig = {
                 name = "shieldhit",
                 type = "Disc",
                 cond = function(self, discSpell)
-                    return RGMercUtils.PCDiscReady(discSpell) and not RGMercUtils.TargetHasBuffByName('Sarnak Finesse')
+                    return RGMercUtils.PCDiscReady(discSpell) and RGMercUtils.TargetNeedsBuffByName('Sarnak Finesse')
                 end,
             },
             {
@@ -710,4 +710,3 @@ local _ClassConfig = {
 
 
 return _ClassConfig
-

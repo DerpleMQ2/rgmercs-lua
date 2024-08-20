@@ -1346,7 +1346,7 @@ _ClassConfig      = {
                 name = "AllianceBuff",
                 type = "Spell",
                 cond = function(self, spell)
-                    return RGMercUtils.IsNamed(mq.TLO.Target) and not RGMercUtils.TargetHasBuff(spell) and
+                    return RGMercUtils.IsNamed(mq.TLO.Target) and RGMercUtils.TargetNeedsBuff(spell) and
                         RGMercUtils.GetSetting('DoAlliance') and RGMercUtils.CanAlliance()
                 end,
             },
@@ -1553,7 +1553,7 @@ _ClassConfig      = {
             --       name = "AllianceBuff",
             --       type = "Spell",
             --      cond = function(self, spell)
-            --           return RGMercUtils.IsNamed(mq.TLO.Target) and not RGMercUtils.TargetHasBuff(spell) and
+            --           return RGMercUtils.IsNamed(mq.TLO.Target) and RGMercUtils.TargetNeedsBuff(spell) and
             --               RGMercUtils.GetSetting('DoAlliance') and RGMercUtils.CanAlliance()
             --       end,
             --    },
@@ -1587,7 +1587,7 @@ _ClassConfig      = {
                 type = "Spell",
                 cond = function(self, spell, target)
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return not RGMercUtils.TargetHasBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell)
+                    return RGMercUtils.SpellStacksOnTarget(spell) and RGMercUtils.TargetNeedsBuff(spell)
                 end,
             },
         },

@@ -465,8 +465,8 @@ local _ClassConfig = {
                 name = "Alliance",
                 type = "Disc",
                 cond = function(self, aaName)
-                    return RGMercUtils.GetSetting('DoAlliance') and RGMercUtils.CanAlliance() and not RGMercUtils.TargetHasBuffByName("Firewalker's Covenant Trigger") and
-                        not RGMercUtils.TargetHasBuffByName("Doomwalker's Alliance Trigger")
+                    return RGMercUtils.GetSetting('DoAlliance') and RGMercUtils.CanAlliance() and RGMercUtils.TargetNeedsBuffByName("Firewalker's Covenant Trigger") and
+                        RGMercUtils.TargetNeedsBuffByName("Doomwalker's Alliance Trigger")
                 end,
             },
             {

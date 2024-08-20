@@ -857,7 +857,7 @@ return {
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return RGMercUtils.GetSetting('DoSlow') and not RGMercUtils.CanUseAA("Sha's Reprisal") and not RGMercUtils.TargetHasBuff(spell) and
+                    return RGMercUtils.GetSetting('DoSlow') and not RGMercUtils.CanUseAA("Sha's Reprisal") and RGMercUtils.TargetNeedsBuff(spell) and
                         RGMercUtils.SpellStacksOnTarget(spell) and
                         spell.SlowPct() > (RGMercUtils.GetTargetSlowedPct())
                 end,
@@ -866,7 +866,7 @@ return {
                 name = "Sha's Reprisal",
                 type = "AA",
                 cond = function(self, aaName, target)
-                    return RGMercUtils.GetSetting('DoSlow') and not RGMercUtils.TargetHasBuffByName(aaName) and
+                    return RGMercUtils.GetSetting('DoSlow') and RGMercUtils.TargetNeedsBuffByName(aaName) and
                         (mq.TLO.Me.AltAbility(aaName).Spell.SlowPct() or 0) > (RGMercUtils.GetTargetSlowedPct())
                 end,
             },
@@ -1037,7 +1037,7 @@ return {
                 type = "Spell",
                 cond = function(self, spell, target)
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return RGMercUtils.GetSetting('DoRunSpeed') and not RGMercUtils.TargetHasBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell)
+                    return RGMercUtils.GetSetting('DoRunSpeed') and RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
             {
@@ -1045,7 +1045,7 @@ return {
                 type = "Spell",
                 cond = function(self, spell, target)
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return RGMercConfig.Constants.RGCasters:contains(target.Class.ShortName()) and not RGMercUtils.TargetHasBuff(spell)
+                    return RGMercConfig.Constants.RGCasters:contains(target.Class.ShortName()) and RGMercUtils.TargetNeedsBuff(spell)
                 end,
             },
             {
@@ -1053,7 +1053,7 @@ return {
                 type = "Spell",
                 cond = function(self, spell, target)
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return RGMercConfig.Constants.RGMelee:contains(target.Class.ShortName()) and not RGMercUtils.TargetHasBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell) and
+                    return RGMercConfig.Constants.RGMelee:contains(target.Class.ShortName()) and RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell) and
                         RGMercUtils.GetSetting('DoAvatar')
                 end,
             },
@@ -1063,7 +1063,7 @@ return {
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return not RGMercUtils.TargetHasBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell)
+                    return RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
             {
@@ -1073,7 +1073,7 @@ return {
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
                     local targetClass = target.Class.ShortName()
-                    return (targetClass == "WAR" or targetClass == "PAL" or targetClass == "SHD") and not RGMercUtils.TargetHasBuff(spell) and
+                    return (targetClass == "WAR" or targetClass == "PAL" or targetClass == "SHD") and RGMercUtils.TargetNeedsBuff(spell) and
                         RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
@@ -1083,7 +1083,7 @@ return {
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return not RGMercUtils.TargetHasBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell)
+                    return RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
             {
@@ -1093,7 +1093,7 @@ return {
                     local targetClass = target.Class.ShortName()
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return (targetClass == "WAR" or targetClass == "PAL" or targetClass == "SHD") and not RGMercUtils.TargetHasBuff(spell) and
+                    return (targetClass == "WAR" or targetClass == "PAL" or targetClass == "SHD") and RGMercUtils.TargetNeedsBuff(spell) and
                         RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
@@ -1103,7 +1103,7 @@ return {
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return not RGMercUtils.TargetHasBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell)
+                    return RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
             {
@@ -1113,7 +1113,7 @@ return {
                     local targetClass = target.Class.ShortName()
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return (targetClass == "WAR" or targetClass == "PAL" or targetClass == "SHD") and not RGMercUtils.TargetHasBuff(spell) and
+                    return (targetClass == "WAR" or targetClass == "PAL" or targetClass == "SHD") and RGMercUtils.TargetNeedsBuff(spell) and
                         RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },

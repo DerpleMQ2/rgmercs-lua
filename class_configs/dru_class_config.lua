@@ -1193,7 +1193,7 @@ local _ClassConfig = {
                 name = "Blessing of Ro",
                 type = "AA",
                 cond = function(self, aaName, target)
-                    return not RGMercUtils.TargetHasBuff(mq.TLO.Me.AltAbility(aaName).Spell.Trigger(1)) and
+                    return RGMercUtils.TargetNeedsBuff(mq.TLO.Me.AltAbility(aaName).Spell.Trigger(1)) and
                         mq.TLO.FindItemCount(mq.TLO.Me.AltAbility("Blessing of Ro").Spell.Trigger(1).NoExpendReagentID(1)())() >
                         0
                 end,
@@ -1269,7 +1269,7 @@ local _ClassConfig = {
                 active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
                 cond = function(self, spell, target)
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return not RGMercUtils.TargetHasBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell) and
+                    return RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell) and
                         Set.new({ "BRD", "SHD", "PAL", "WAR", "ROG", "BER", "MNK", "RNG", }):contains((target.Class.ShortName() or ""))
                 end,
             },
@@ -1280,7 +1280,7 @@ local _ClassConfig = {
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return RGMercConfig.Constants.RGTank:contains(target.Class.ShortName()) and not RGMercUtils.TargetHasBuff(spell)
+                    return RGMercConfig.Constants.RGTank:contains(target.Class.ShortName()) and RGMercUtils.TargetNeedsBuff(spell)
                         and RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
@@ -1291,7 +1291,7 @@ local _ClassConfig = {
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.SpellStacksOnTarget(spell)
+                    return RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
             {
@@ -1299,7 +1299,7 @@ local _ClassConfig = {
                 type = "Spell",
                 active_cond = function(self, spell) return true end,
                 cond = function(self, spell, target)
-                    return not RGMercUtils.TargetHasBuff(spell) and target and target and
+                    return RGMercUtils.TargetNeedsBuff(spell) and target and target and
                         Set.new({ "SHD", "WAR", }):contains(target.Class.ShortName())
                 end,
             },
@@ -1310,7 +1310,7 @@ local _ClassConfig = {
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return not RGMercUtils.TargetHasBuff(spell, target) and RGMercUtils.SpellStacksOnTarget(spell)
+                    return RGMercUtils.TargetNeedsBuff(spell, target) and RGMercUtils.SpellStacksOnTarget(spell)
                 end,
             },
             {
@@ -1318,7 +1318,7 @@ local _ClassConfig = {
                 type = "AA",
                 active_cond = function(self, aaName) return true end,
                 cond = function(self, aaName, target)
-                    return not RGMercUtils.TargetHasBuff(mq.TLO.Me.AltAbility(aaName).Spell) and
+                    return RGMercUtils.TargetNeedsBuff(mq.TLO.Me.AltAbility(aaName).Spell) and
                         target.ID() == RGMercUtils.GetMainAssistId()
                 end,
             },

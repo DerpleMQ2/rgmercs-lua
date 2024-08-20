@@ -864,7 +864,7 @@ local _ClassConfig = {
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return not RGMercUtils.TargetHasBuff(spell) and spell.Trigger(2).StacksTarget()
+                    return RGMercUtils.TargetNeedsBuff(spell) and spell.Trigger(2).StacksTarget()
                 end,
             },
             {
@@ -1031,7 +1031,7 @@ local _ClassConfig = {
                 name = "Heretic's Twincast",
                 type = "AA",
                 cond = function(self, aaName)
-                    return RGMercUtils.SelfBuffAACheck(aaName) and not RGMercUtils.TargetHasBuffByName(aaName)
+                    return RGMercUtils.SelfBuffAACheck(aaName) and RGMercUtils.TargetNeedsBuffByName(aaName)
                 end,
             },
             {
