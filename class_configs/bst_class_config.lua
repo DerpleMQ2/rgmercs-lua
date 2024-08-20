@@ -683,7 +683,7 @@ return {
                     RGMercUtils.FindWorstHurtManaXT(RGMercUtils.GetSetting('ParagonPct')), }
             end,
             cond = function(self, combat_state)
-                return combat_state == "Combat" and RGMercUtils.GetSetting('DoParagon') and not RGMercUtils.BuffActive(mq.TLO.Me.AltAbility('Paragon of Spirit').Spell) and
+                return combat_state == "Combat" and RGMercUtils.GetSetting('DoParagon') and RGMercUtils.NeedBuff(mq.TLO.Me.AltAbility('Paragon of Spirit').Spell) and
                     not RGMercUtils.Feigning()
             end,
         },
@@ -721,20 +721,20 @@ return {
             local discSpell = self.ResolvedActionMap['HHEFuryDisc']
             return discSpell and discSpell() and not RGMercUtils.SongActiveByName(discSpell.RankName()) and
                 not RGMercUtils.SongActiveByName('Bestial Alignment') and
-                not RGMercUtils.BuffActiveByName('Ferociousness')
+                RGMercUtils.NeedBuffByName('Ferociousness')
         end,
         HHEFuryDiscCheckPrimary = function(self)
             local discSpell = self.ResolvedActionMap['HHEFuryDisc']
             return discSpell and discSpell() and not RGMercUtils.SongActiveByName(discSpell.RankName()) and
                 not RGMercUtils.SongActiveByName('Bestial Alignment') and
-                not RGMercUtils.BuffActiveByName('Ferociousness') and
+                RGMercUtils.NeedBuffByName('Ferociousness') and
                 not RGMercUtils.PCAAReady("Bestial Alignment")
         end,
         HHEFuryDiscCheckSecondary = function(self)
             local discSpell = self.ResolvedActionMap['HHEFuryDisc']
             return discSpell and discSpell() and not RGMercUtils.SongActiveByName(discSpell.RankName()) and
                 not RGMercUtils.SongActiveByName('Bestial Alignment') and
-                not RGMercUtils.BuffActiveByName('Ferociousness')
+                RGMercUtils.NeedBuffByName('Ferociousness')
         end,
         FerociousnessCheck = function(self)
             local discSpell = self.ResolvedActionMap['HHEFuryDisc']
@@ -827,7 +827,7 @@ return {
                 name = "Ferociousness",
                 type = "AA",
                 cond = function(self, aaName, target)
-                    return self.ClassConfig.HelperFunctions.FerociousnessCheck(self) and RGMercUtils.BuffActiveByName(aaName) and RGMercUtils.PCAAReady(aaName) and
+                    return self.ClassConfig.HelperFunctions.FerociousnessCheck(self) and not RGMercUtils.NeedBuffByName(aaName) and RGMercUtils.PCAAReady(aaName) and
                         not RGMercUtils.PCDiscReady(self.ResolvedActionMap['HHEFuryDisc'])
                 end,
             },
@@ -836,7 +836,7 @@ return {
                 name = "Companion's Fury",
                 type = "AA",
                 cond = function(self, aaName, target)
-                    return self.ClassConfig.HelperFunctions.FerociousnessCheck(self) and (not RGMercUtils.BuffActiveByName("Ferociousness") or
+                    return self.ClassConfig.HelperFunctions.FerociousnessCheck(self) and (RGMercUtils.NeedBuffByName("Ferociousness") or
                         not RGMercUtils.CanUseAA("Ferociousness"))
                 end,
             },
@@ -845,7 +845,7 @@ return {
                 name = "Group Bestial Alignment",
                 type = "AA",
                 cond = function(self, aaName, target)
-                    return self.ClassConfig.HelperFunctions.FerociousnessCheck(self) and (not RGMercUtils.BuffActiveByName("Ferociousness") or
+                    return self.ClassConfig.HelperFunctions.FerociousnessCheck(self) and (RGMercUtils.NeedBuffByName("Ferociousness") or
                         not RGMercUtils.CanUseAA("Ferociousness"))
                 end,
             },
@@ -964,7 +964,7 @@ return {
                 name = "BeastialBuffDisc",
                 type = "Disc",
                 cond = function(self, discSpell, target)
-                    return RGMercUtils.BuffActive(discSpell)
+                    return not RGMercUtils.NeedBuff(discSpell)
                 end,
             },
             {

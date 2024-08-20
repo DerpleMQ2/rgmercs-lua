@@ -1179,14 +1179,14 @@ local _ClassConfig = {
                     local aaSpell = mq.TLO.Spell(mq.TLO.Me.AltAbility("Saint's Unity").Spell.Trigger(1).BaseName() or "")
                     local aaLevel = aaSpell and aaSpell.Level() or 0
                     return aaLevel < (spell.Level() or 0) and RGMercUtils.GetSetting('DoDruid') and spell.Stacks() and RGMercUtils.CanUseAA('Spirit Mastery') and
-                        not RGMercUtils.BuffActive(spell)
+                        RGMercUtils.NeedBuff(spell)
                 end,
             },
             {
                 name = "GroupHealProcBuff",
                 type = "Spell",
                 cond = function(self, spell)
-                    return RGMercUtils.SpellStacksOnMe(spell) and not RGMercUtils.BuffActive(spell)
+                    return RGMercUtils.SpellStacksOnMe(spell) and RGMercUtils.NeedBuff(spell)
                 end,
             },
         },
@@ -1206,7 +1206,7 @@ local _ClassConfig = {
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
-                    return RGMercUtils.GetSetting('DoDruid') and RGMercUtils.SpellStacksOnTarget(spell) and not RGMercUtils.BuffActive(spell)
+                    return RGMercUtils.GetSetting('DoDruid') and RGMercUtils.SpellStacksOnTarget(spell) and RGMercUtils.NeedBuff(spell)
                 end,
             },
         },

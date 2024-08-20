@@ -872,31 +872,31 @@ local _ClassConfig = {
             {
                 name = "SelfHPBuff",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) end,
             },
             {
                 name = "MezBuff",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) end,
             },
             {
                 name = "SelfRune1",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) end,
             },
             {
                 name = "SelfRune2",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) end,
             },
             {
                 name = "Veil of Mindshadow",
                 type = "AA",
-                active_cond = function(self, aaName) return RGMercUtils.BuffActiveByName(aaName) end,
+                active_cond = function(self, aaName) return not RGMercUtils.NeedBuffByName(aaName) end,
                 cond = function(self, aaName) return RGMercUtils.SelfBuffAACheck(aaName) end,
             },
 
@@ -1022,7 +1022,7 @@ local _ClassConfig = {
                     if not target or not target() then return false end
 
                     if not RGMercConfig.Constants.RGTank:contains(target.Class.ShortName()) then return false end
-                    --TODO: Fix this, TargetHasBuff is a bandaid, spamcasting on tank without it even though we are using CheckPCNeedsBuff
+                    --TODO: Fix this, TargetNeedsBuff is a bandaid, spamcasting on tank without it even though we are using CheckPCNeedsBuff
                     return RGMercUtils.CheckPCNeedsBuff(spell, target.ID(), target.CleanName()) and RGMercUtils.ReagentCheck(spell)
                         and RGMercUtils.TargetNeedsBuff(spell, target)
                 end,
@@ -1192,7 +1192,7 @@ local _ClassConfig = {
                 name = "TwinCast",
                 type = "Spell",
                 cond = function(self, spell)
-                    return RGMercUtils.GetSetting('DoTwincastDPS') and not RGMercUtils.BuffActiveByID(spell.ID()) and not RGMercUtils.BuffActiveByName("Improved Twincast") and
+                    return RGMercUtils.GetSetting('DoTwincastDPS') and RGMercUtils.NeedBuffByID(spell.ID()) and RGMercUtils.NeedBuffByName("Improved Twincast") and
                         not RGMercModules:ExecModule("Mez", "IsMezImmune", mq.TLO.Target.ID())
                 end,
             },

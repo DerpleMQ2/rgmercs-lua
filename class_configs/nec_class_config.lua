@@ -754,7 +754,7 @@ local _ClassConfig = {
             {
                 name = "LichSpell",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.GetSetting('DoLich') and RGMercUtils.SelfBuffCheck(spell) and
                         (not RGMercUtils.GetSetting('DoUnity') or not RGMercUtils.AAReady("Mortifier's Unity")) and
@@ -768,7 +768,7 @@ local _ClassConfig = {
                 cond = function(self, _)
                     local lichSpell = self:GetResolvedActionMapItem('LichSpell')
 
-                    return lichSpell and lichSpell() and RGMercUtils.BuffActive(lichSpell) and
+                    return lichSpell and lichSpell() and not RGMercUtils.NeedBuff(lichSpell) and
                         (mq.TLO.Me.PctHPs() <= RGMercUtils.GetSetting('StopLichHP') or mq.TLO.Me.PctMana() >= RGMercUtils.GetSetting('StopLichMana'))
                 end,
                 custom_func = function(self)
@@ -1105,7 +1105,7 @@ local _ClassConfig = {
             {
                 name = "Mortifier's Unity",
                 type = "AA",
-                active_cond = function(self) return RGMercUtils.BuffActiveByName("Shield of Darkness") and RGMercUtils.BuffActiveByName("Otherside") end,
+                active_cond = function(self) return not RGMercUtils.NeedBuffByName("Shield of Darkness") and not RGMercUtils.NeedBuffByName("Otherside") end,
                 cond = function(self, aaName)
                     return RGMercUtils.GetSetting('DoUnity') and RGMercUtils.SelfBuffAACheck(aaName)
                 end,
@@ -1113,19 +1113,19 @@ local _ClassConfig = {
             {
                 name = "SelfHPBuff",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) end,
             },
             {
                 name = "SelfRune1",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) end,
             },
             {
                 name = "SelfSpellShield1",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) end,
             },
             {

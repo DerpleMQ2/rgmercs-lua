@@ -12,7 +12,7 @@ local _ClassConfig = {
                 local discSpell = self:GetResolvedActionMapItem('meleemit')
 
                 if discSpell and discSpell() and RGMercUtils.PCDiscReady(discSpell) then
-                    if RGMercUtils.BuffActiveByName('Night\'s Endless Terror') then
+                    if not RGMercUtils.NeedBuffByName('Night\'s Endless Terror') then
                         RGMercUtils.DoCmd('/docommand /removebuff "Night\'s Endless Terror"')
                         mq.delay(5)
                     end
@@ -313,7 +313,7 @@ local _ClassConfig = {
                 type = "Disc",
                 cond = function(self, discSpell)
                     return RGMercUtils.IsModeActive("Tank") and RGMercUtils.PCDiscReady(discSpell) and mq.TLO.Me.PctEndurance() > 20 and
-                        not RGMercUtils.BuffActiveByID(discSpell.ID())
+                        RGMercUtils.NeedBuffByID(discSpell.ID())
                 end,
             },
             {
@@ -335,14 +335,14 @@ local _ClassConfig = {
                 type = "Disc",
                 cond = function(self, discSpell)
                     return RGMercUtils.IsModeActive("Tank") and RGMercUtils.PCDiscReady(discSpell) and mq.TLO.Me.PctEndurance() > 10 and
-                        not RGMercUtils.BuffActiveByID(discSpell.ID())
+                        RGMercUtils.NeedBuffByID(discSpell.ID())
                 end,
             },
             {
                 name = "aeselfbuff",
                 type = "Disc",
                 cond = function(self, discSpell)
-                    return RGMercUtils.PCDiscReady(discSpell) and mq.TLO.Me.PctEndurance() > 10 and not RGMercUtils.BuffActiveByID(discSpell.ID())
+                    return RGMercUtils.PCDiscReady(discSpell) and mq.TLO.Me.PctEndurance() > 10 and RGMercUtils.NeedBuffByID(discSpell.ID())
                 end,
             },
             {
@@ -492,7 +492,7 @@ local _ClassConfig = {
                 cond = function(self, discSpell)
                     local stHate = self:GetResolvedActionMapItem('singlehealhate')
                     return RGMercUtils.IsModeActive("Tank") and RGMercUtils.GetSetting('DoAEHate') and RGMercUtils.PCDiscReady(discSpell) and
-                        not RGMercUtils.BuffActiveByID(discSpell.ID()) and (stHate and not RGMercUtils.BuffActiveByID(stHate.ID()))
+                        RGMercUtils.NeedBuffByID(discSpell.ID()) and (stHate and RGMercUtils.NeedBuffByID(stHate.ID()))
                 end,
             },
             {
@@ -500,7 +500,7 @@ local _ClassConfig = {
                 type = "Disc",
                 cond = function(self, discSpell)
                     return RGMercUtils.IsModeActive("Tank") and RGMercUtils.PCDiscReady(discSpell) and
-                        not RGMercUtils.BuffActiveByID(discSpell.ID())
+                        RGMercUtils.NeedBuffByID(discSpell.ID())
                 end,
             },
             {
@@ -536,7 +536,7 @@ local _ClassConfig = {
                 name = "Brace for Impact",
                 type = "AA",
                 cond = function(self, aaName)
-                    return RGMercUtils.IsModeActive("Tank") and RGMercUtils.PCAAReady(aaName) and not RGMercUtils.BuffActiveByName(aaName) and RGMercUtils.GetSetting('DoBuffs') and
+                    return RGMercUtils.IsModeActive("Tank") and RGMercUtils.PCAAReady(aaName) and RGMercUtils.NeedBuffByName(aaName) and RGMercUtils.GetSetting('DoBuffs') and
                         not RGMercUtils.GetSetting('DoDefense')
                 end,
             },

@@ -804,12 +804,12 @@ function RGMercUtils.UseItem(itemName, targetId)
         return false
     end
 
-    if RGMercUtils.BuffActiveByID(item.Clicky.SpellID()) then
+    if not RGMercUtils.NeedBuffByID(item.Clicky.SpellID()) then
         RGMercsLogger.log_debug("\awUseItem(\ag%s\aw): \arTried to use item - but the clicky buff is already active!", itemName)
         return false
     end
 
-    if RGMercUtils.BuffActiveByID(item.Spell.ID()) then
+    if not RGMercUtils.NeedBuffByID(item.Spell.ID()) then
         RGMercsLogger.log_debug("\awUseItem(\ag%s\aw): \arTried to use item - but the buff is already active!", itemName)
         return false
     end
@@ -1504,14 +1504,14 @@ end
 function RGMercUtils.SelfBuffCheck(spell)
     if type(spell) == "string" then
         RGMercsLogger.log_verbose("\agSelfBuffCheck(%s) string", spell)
-        return RGMercUtils.BuffActiveByName(spell)
+        return not RGMercUtils.NeedBuffByName(spell)
     end
     if not spell or not spell() then
         --RGMercsLogger.log_verbose("\arSelfBuffCheck() Spell Invalid")
         return false
     end
 
-    local res = not RGMercUtils.BuffActiveByID(spell.RankName.ID()) and spell.Stacks()
+    local res = RGMercUtils.NeedBuffByID(spell.RankName.ID()) and spell.Stacks()
 
     RGMercsLogger.log_verbose("\aySelfBuffCheck(\at%s\ay/\am%d\ay) Spell Obj => %s", spell.RankName(),
         spell.RankName.ID(),
@@ -1683,8 +1683,8 @@ end
 ---@return boolean
 function RGMercUtils.SelfBuffAACheck(aaName)
     local abilityReady = mq.TLO.Me.AltAbilityReady(aaName)()
-    local buffNotActive = not RGMercUtils.BuffActiveByID(mq.TLO.Me.AltAbility(aaName).Spell.ID())
-    local triggerNotActive = not RGMercUtils.BuffActiveByID(mq.TLO.Me.AltAbility(aaName).Spell.Trigger(1).ID())
+    local buffNotActive = RGMercUtils.NeedBuffByID(mq.TLO.Me.AltAbility(aaName).Spell.ID())
+    local triggerNotActive = RGMercUtils.NeedBuffByID(mq.TLO.Me.AltAbility(aaName).Spell.Trigger(1).ID())
     local auraNotActive = not mq.TLO.Me.Aura(tostring(mq.TLO.Spell(aaName).RankName())).ID()
     local stacks = RGMercUtils.SpellStacksOnMe(mq.TLO.Spell(mq.TLO.Me.AltAbility(aaName).Spell.RankName.Name()))
     local triggerStacks = (not mq.TLO.Me.AltAbility(aaName).Spell.Trigger(1).ID() or mq.TLO.Me.AltAbility(aaName).Spell.Trigger(1).Stacks())
@@ -1747,42 +1747,25 @@ function RGMercUtils.TargetNeedsBuff(spell, buffTarget)
 
     if not target.BuffsPopulated() then return false end
 
-    return RGMercUtils.TargetNeedsBuff(spell, target)
-end
-
----@param spell MQSpell
----@param buffTarget (target|spawn|character|fun():string|nil)?
----@return boolean
-function RGMercUtils.TargetHasBuff(spell, buffTarget)
-    ---@type target|spawn|character|fun():string|nil
-    local target = mq.TLO.Target
-
-    if buffTarget ~= nil and buffTarget.ID() > 0 then
-        target = buffTarget
-    end
-
-    if not spell or not spell() then return false end
-    if not target or not target() then return false end
-
     local numEffects = spell.NumEffects()
 
-    RGMercsLogger.log_verbose("TargetHasBuff() Searching for spell(%s) ID: %d on %s", spell.Name(), spell.ID(), target.DisplayName())
-    if (target.FindBuff("id " .. tostring(spell.ID())).ID() or 0) > 0 then return true end
-    RGMercsLogger.log_verbose("TargetHasBuff() Searching for rank spell(%s) ID: %d on %s", spell.RankName.Name(), spell.RankName.ID(), target.DisplayName())
-    if (target.FindBuff("id " .. tostring(spell.RankName.ID())).ID() or 0) > 0 then return true end
+    RGMercsLogger.log_verbose("TargetNeedsBuff() Searching for spell(%s) ID: %d on %s", spell.Name(), spell.ID(), target.DisplayName())
+    if (target.FindBuff("id " .. tostring(spell.ID())).ID() or 0) > 0 then return false end
+    RGMercsLogger.log_verbose("TargetNeedsBuff() Searching for rank spell(%s) ID: %d on %s", spell.RankName.Name(), spell.RankName.ID(), target.DisplayName())
+    if (target.FindBuff("id " .. tostring(spell.RankName.ID())).ID() or 0) > 0 then return false end
 
     for i = 1, numEffects do
         local triggerSpell = spell.Trigger(i)
         if triggerSpell and triggerSpell() then
-            RGMercsLogger.log_verbose("TargetHasBuff() Searching for trigger spell ID: %d on %s", triggerSpell.ID(), target.DisplayName())
-            if (target.FindBuff("id " .. tostring(triggerSpell.ID())).ID() or 0) > 0 then return true end
-            RGMercsLogger.log_verbose("TargetHasBuff() Searching for trigger rank spell ID: %d on %s", triggerSpell.ID(), target.DisplayName())
-            if (target.FindBuff("id " .. tostring(triggerSpell.RankName.ID())).ID() or 0) > 0 then return true end
+            RGMercsLogger.log_verbose("TargetNeedsBuff() Searching for trigger spell ID: %d on %s", triggerSpell.ID(), target.DisplayName())
+            if (target.FindBuff("id " .. tostring(triggerSpell.ID())).ID() or 0) > 0 then return false end
+            RGMercsLogger.log_verbose("TargetNeedsBuff() Searching for trigger rank spell ID: %d on %s", triggerSpell.ID(), target.DisplayName())
+            if (target.FindBuff("id " .. tostring(triggerSpell.RankName.ID())).ID() or 0) > 0 then return false end
         end
     end
 
-    --RGMercsLogger.log_verbose("TargetHasBuff() Failed to find spell: %d on %s", spell.Name(), target.DisplayName())
-    return false
+    --RGMercsLogger.log_verbose("TargetNeedsBuff() Failed to find spell: %d on %s", spell.Name(), target.DisplayName())
+    return true
 end
 
 ---@param spell MQSpell # Must be Targetting Target.
@@ -1833,16 +1816,7 @@ end
 ---@return boolean
 function RGMercUtils.TargetNeedsBuffByName(buffName, buffTarget)
     if buffName == nil then return false end
-    if buffTarget and buffTarget() and not buffTarget.BuffsPopulated() then return false end
-    return not RGMercUtils.TargetHasBuff(mq.TLO.Spell(buffName), buffTarget)
-end
-
----@param buffName string
----@param buffTarget (target|spawn|character|fun():string|nil)?
----@return boolean
-function RGMercUtils.TargetHasBuffByName(buffName, buffTarget)
-    if buffName == nil then return false end
-    return RGMercUtils.TargetHasBuff(mq.TLO.Spell(buffName), buffTarget)
+    return not RGMercUtils.TargetNeedsBuff(mq.TLO.Spell(buffName), buffTarget)
 end
 
 ---@param target MQTarget|nil
@@ -2351,7 +2325,7 @@ function RGMercUtils.DebuffSong(songSpell)
     local res = me.Gem(songSpell.Name()) and RGMercUtils.TargetNeedsBuff(songSpell)
     RGMercsLogger.log_verbose("\ayBuffSong(%s) => memed(%s), targetHas(%s) --> result(%s)", songSpell.Name(),
         RGMercUtils.BoolToColorString(me.Gem(songSpell.Name())() ~= nil),
-        RGMercUtils.BoolToColorString(RGMercUtils.TargetHasBuff(songSpell)), RGMercUtils.BoolToColorString(res))
+        RGMercUtils.BoolToColorString(not RGMercUtils.TargetNeedsBuff(songSpell)), RGMercUtils.BoolToColorString(res))
     return res
 end
 
@@ -3510,29 +3484,29 @@ end
 
 ---@param spell MQSpell
 ---@return boolean
-function RGMercUtils.BuffActive(spell)
+function RGMercUtils.NeedBuff(spell)
     if not spell or not spell() then return false end
 
-    return RGMercUtils.TargetHasBuff(spell, mq.TLO.Me)
+    return RGMercUtils.TargetNeedBuff(spell, mq.TLO.Me)
 end
 
 ---@param buffName string
 ---@return boolean
-function RGMercUtils.BuffActiveByName(buffName)
+function RGMercUtils.NeedBuffByName(buffName)
     if not buffName or buffName:len() == 0 then return false end
     if type(buffName) ~= "string" then
-        RGMercsLogger.log_error("\arRGMercUtils.BuffActiveByName was passed a non-string buffname! %s", type(buffName))
+        RGMercsLogger.log_error("\arnot RGMercUtils.NeedBuffByName was passed a non-string buffname! %s", type(buffName))
         return false
     end
 
-    return RGMercUtils.BuffActive(mq.TLO.Spell(buffName))
+    return RGMercUtils.NeedBuff(mq.TLO.Spell(buffName))
 end
 
 ---@param buffId integer
 ---@return boolean
-function RGMercUtils.BuffActiveByID(buffId)
+function RGMercUtils.NeedBuffByID(buffId)
     if not buffId then return false end
-    return RGMercUtils.BuffActive(mq.TLO.Spell(buffId))
+    return RGMercUtils.NeedBuff(mq.TLO.Spell(buffId))
 end
 
 ---@param auraName string

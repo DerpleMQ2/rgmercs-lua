@@ -737,7 +737,7 @@ return {
                 name = "Improved Twincast",
                 type = "AA",
                 cond = function(self)
-                    return not RGMercUtils.BuffActiveByName("Twincast")
+                    return RGMercUtils.NeedBuffByName("Twincast")
                 end,
             },
             {
@@ -799,7 +799,7 @@ return {
             {
                 name = "Etherealist's Unity",
                 type = "AA",
-                active_cond = function(self, aaName) return RGMercUtils.BuffActiveByID(mq.TLO.Me.AltAbility(aaName).Spell.Trigger(1).ID()) end,
+                active_cond = function(self, aaName) return not RGMercUtils.NeedBuffByID(mq.TLO.Me.AltAbility(aaName).Spell.Trigger(1).ID()) end,
                 cond = function(self, aaName)
                     local selfHPBuff = RGMercModules:ExecModule("Class", "GetResolvedActionMapItem", "SelfHPBuff")
                     local selfHPBuffLevel = selfHPBuff and selfHPBuff() and selfHPBuff.Level() or 0
@@ -935,7 +935,7 @@ return {
                 name = "DichoSpell",
                 type = "Spell",
                 cond = function(self, spell)
-                    return not RGMercUtils.DetGambitCheck() and mq.TLO.Me.Buff("Twincast").ID() == 0 and not RGMercUtils.BuffActiveByName("Improved Twincast")
+                    return not RGMercUtils.DetGambitCheck() and mq.TLO.Me.Buff("Twincast").ID() == 0 and RGMercUtils.NeedBuffByName("Improved Twincast")
                 end,
             },
             {
@@ -1035,7 +1035,7 @@ return {
             {
                 name = "SelfHPBuff",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return (spell.Level() or 0) > (mq.TLO.Me.AltAbility("Etherealist's Unity").Spell.Trigger(1).Level() or 0) and RGMercUtils.SelfBuffCheck(spell)
                 end,
@@ -1043,7 +1043,7 @@ return {
             {
                 name = "Etherealist's Unity",
                 type = "AA",
-                active_cond = function(self, aaName) return RGMercUtils.BuffActiveByID(mq.TLO.Me.AltAbility(aaName).Spell.Trigger(1).ID()) end,
+                active_cond = function(self, aaName) return not RGMercUtils.NeedBuffByID(mq.TLO.Me.AltAbility(aaName).Spell.Trigger(1).ID()) end,
                 cond = function(self, aaName)
                     local selfHPBuff = RGMercModules:ExecModule("Class", "GetResolvedActionMapItem", "SelfHPBuff")
                     local selfHPBuffLevel = selfHPBuff and selfHPBuff() and selfHPBuff.Level() or 0
@@ -1053,7 +1053,7 @@ return {
             {
                 name = "SelfRune1",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell)
                 end,
@@ -1068,15 +1068,15 @@ return {
             {
                 name = "FamiliarBuff",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
-                    return spell.Stacks() and spell.Level() > (mq.TLO.Me.AltAbility("Improved Familiar").Spell.Level() or 0) and not RGMercUtils.BuffActiveByID(spell.RankName.ID())
+                    return spell.Stacks() and spell.Level() > (mq.TLO.Me.AltAbility("Improved Familiar").Spell.Level() or 0) and RGMercUtils.NeedBuffByID(spell.RankName.ID())
                 end,
             },
             {
                 name = "Improved Familiar",
                 type = "AA",
-                active_cond = function(self, aaName) return RGMercUtils.BuffActiveByID(mq.TLO.Me.AltAbility(aaName).Spell.ID()) end,
+                active_cond = function(self, aaName) return not RGMercUtils.NeedBuffByID(mq.TLO.Me.AltAbility(aaName).Spell.ID()) end,
                 cond = function(self, aaName)
                     local familiarBuff = RGMercModules:ExecModule("Class", "GetResolvedActionMapItem", "FamiliarBuff")
                     local familiarBuffLevel = familiarBuff and familiarBuff() and familiarBuff.Level() or 0

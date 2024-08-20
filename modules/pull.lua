@@ -566,14 +566,13 @@ function Module:Render()
                     self.settings.FarmWayPoints[mq.TLO.Zone.ShortName()] = {}
                     for step, data in pairs(self.TempSettings.MyPaths[mq.TLO.Zone.ShortName()][self.TempSettings.SelectedPath]) do
                         local mpy, mpx, mpz = data.loc:match("([^,]+),%s*([^,]+),%s*([^,]+)")
-                        self.settings.FarmWayPoints[mq.TLO.Zone.ShortName()][step] = {x = tonumber(mpx), y = tonumber(mpy), z = tonumber(mpz)}
+                        self.settings.FarmWayPoints[mq.TLO.Zone.ShortName()][step] = { x = tonumber(mpx), y = tonumber(mpy), z = tonumber(mpz), }
                     end
                 end
-
             else
                 Module.TempSettings.MyPaths = 'None'
             end
-            
+
             if ImGui.BeginTable("Waypoints", 3, bit32.bor(ImGuiTableFlags.Borders)) then
                 ImGui.TableSetupColumn('Id', (ImGuiTableColumnFlags.WidthFixed), 40.0)
                 ImGui.TableSetupColumn('Loc', (ImGuiTableColumnFlags.WidthStretch), 150.0)
@@ -765,7 +764,7 @@ function Module:ShouldPull(campData)
         return false, string.format("Ice Infection")
     end
 
-    if RGMercUtils.BuffActiveByName("Resurrection Sickness") then return false, string.format("Resurrection Sickness") end
+    if not RGMercUtils.NeedBuffByName("Resurrection Sickness") then return false, string.format("Resurrection Sickness") end
 
     if (me.Snared.ID() or 0 > 0) then
         RGMercsLogger.log_super_verbose("\ay::PULL:: \arAborted!\ax I am snared!")
@@ -857,17 +856,21 @@ function Module:CheckGroupForPull(classes, resourceResumePct, resourcePausePct, 
                 local resourcePct = self.TempSettings.PullState == PullStates.PULL_GROUPWATCH_WAIT and resourceResumePct or resourcePausePct
                 if member.PctHPs() < resourcePct then
                     RGMercUtils.PrintGroupMessage("%s is low on hp - Holding pulls!", member.CleanName())
-                    RGMercsLogger.log_verbose("\arMember is low on Health - \ayHolding pulls!\ax\ag ResourcePCT:\ax \at%d \aoStopPct: \at%d \ayStartPct: \at%d \aoPullState: \at%d",resourcePct,resourcePausePct,resourceResumePct, self.TempSettings.PullState)
+                    RGMercsLogger.log_verbose("\arMember is low on Health - \ayHolding pulls!\ax\ag ResourcePCT:\ax \at%d \aoStopPct: \at%d \ayStartPct: \at%d \aoPullState: \at%d",
+                        resourcePct, resourcePausePct, resourceResumePct, self.TempSettings.PullState)
                     return false, string.format("%s Low HP", member.CleanName())
                 end
-                if member.Class.CanCast() and member.Class.ShortName() ~= "BRD" and member.PctMana() < resourcePct  then
+                if member.Class.CanCast() and member.Class.ShortName() ~= "BRD" and member.PctMana() < resourcePct then
                     RGMercUtils.PrintGroupMessage("%s is low on mana - Holding pulls!", member.CleanName())
-                    RGMercsLogger.log_verbose("\arMember is low on Mana - \ayHolding pulls!\ax\ag ResourcePCT:\ax \at%d \aoStopPct: \at%d \ayStartPct: \at%d \aoPullState: \at%d",resourcePct,resourcePausePct,resourceResumePct, self.TempSettings.PullState)
+                    RGMercsLogger.log_verbose("\arMember is low on Mana - \ayHolding pulls!\ax\ag ResourcePCT:\ax \at%d \aoStopPct: \at%d \ayStartPct: \at%d \aoPullState: \at%d",
+                        resourcePct, resourcePausePct, resourceResumePct, self.TempSettings.PullState)
                     return false, string.format("%s Low Mana", member.CleanName())
                 end
-                if member.Class.ShortName() ~= "BRD" and member.PctEndurance() < resourcePct  then
+                if member.Class.ShortName() ~= "BRD" and member.PctEndurance() < resourcePct then
                     RGMercUtils.PrintGroupMessage("%s is low on endurance - Holding pulls!", member.CleanName())
-                    RGMercsLogger.log_verbose("\arMember is low on Endurance - \ayHolding pulls!\ax\ag ResourcePCT:\ax \at%d \aoStopPct: \at%d \ayStartPct: \at%d \aoPullState: \at%d",resourcePct,resourcePausePct,resourceResumePct, self.TempSettings.PullState)
+                    RGMercsLogger.log_verbose(
+                    "\arMember is low on Endurance - \ayHolding pulls!\ax\ag ResourcePCT:\ax \at%d \aoStopPct: \at%d \ayStartPct: \at%d \aoPullState: \at%d", resourcePct,
+                        resourcePausePct, resourceResumePct, self.TempSettings.PullState)
                     return false, string.format("%s Low End", member.CleanName())
                 end
 

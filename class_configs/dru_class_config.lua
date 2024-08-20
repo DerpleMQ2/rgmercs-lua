@@ -1251,13 +1251,13 @@ local _ClassConfig = {
             {
                 name = "GroupDmgShield",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) end,
             },
             {
                 name = "MoveSpells",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.GetSetting("DoRunSpeed") and
                         RGMercUtils.SelfBuffCheck(spell)
@@ -1266,7 +1266,7 @@ local _ClassConfig = {
             {
                 name = "AtkBuff",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell, target)
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.SpellStacksOnTarget(spell) and
@@ -1287,7 +1287,7 @@ local _ClassConfig = {
             {
                 name = "HPTypeOneGroup",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
@@ -1306,7 +1306,7 @@ local _ClassConfig = {
             {
                 name = "GroupRegenBuff",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell, target)
                     -- force the target for StacksTarget to work.
                     RGMercUtils.SetTarget(target.ID() or 0)
@@ -1327,13 +1327,13 @@ local _ClassConfig = {
             {
                 name = "SelfShield",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) end,
             },
             {
                 name = "SelfManaRegen",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) and mq.TLO.Zone.Outdoor() end,
             },
             {
@@ -1345,14 +1345,14 @@ local _ClassConfig = {
             {
                 name = "ManaBear",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell) return (spell and spell() and spell.MyCastTime() or 999999) < 30000 end,
             },
             {
                 name = "Group Spirit of the Great Wolf",
                 type = "AA",
                 active_cond = function(self, aaName)
-                    return RGMercUtils.BuffActiveByID(mq.TLO.Me.AltAbility(aaName)
+                    return not RGMercUtils.NeedBuffByID(mq.TLO.Me.AltAbility(aaName)
                         .Spell.ID())
                 end,
                 cond = function(self, aaName)
@@ -1363,7 +1363,7 @@ local _ClassConfig = {
                 name = "Spirit of the Great Wolf",
                 type = "AA",
                 active_cond = function(self, aaName)
-                    return RGMercUtils.BuffActiveByID(mq.TLO.Me.AltAbility(aaName)
+                    return not RGMercUtils.NeedBuffByID(mq.TLO.Me.AltAbility(aaName)
                         .Spell.ID())
                 end,
                 cond = function(self, aaName)
@@ -1374,7 +1374,7 @@ local _ClassConfig = {
                 name = "Preincarnation",
                 type = "AA",
                 active_cond = function(self, aaName)
-                    return RGMercUtils.BuffActiveByID(mq.TLO.Me.AltAbility(aaName)
+                    return not RGMercUtils.NeedBuffByID(mq.TLO.Me.AltAbility(aaName)
                         .Spell.ID())
                 end,
                 cond = function(self, aaName)

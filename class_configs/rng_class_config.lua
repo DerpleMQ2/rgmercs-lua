@@ -958,7 +958,7 @@ local _ClassConfig = {
                 name = "Wildstalker's Unity (Azia)",
                 type = "AA",
                 tooltip = Tooltips.UnityBuff,
-                active_cond = function(self, aaName) return RGMercUtils.BuffActive(mq.TLO.Me.AltAbility(aaName).Spell) end,
+                active_cond = function(self, aaName) return not RGMercUtils.NeedBuff(mq.TLO.Me.AltAbility(aaName).Spell) end,
                 cond = function(self, aaName)
                     return castWSU() and not RGMercUtils.SpellStacksOnMe(mq.TLO.Me.AltAbility(aaName).Spell) and
                         RGMercUtils.TargetNeedsBuff(mq.TLO.Me.AltAbility(aaName).Spell, mq.TLO.Me)
@@ -968,7 +968,7 @@ local _ClassConfig = {
                 name = "Protectionbuff",
                 type = "Spell",
                 tooltip = Tooltips.Protectionbuff,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return not castWSU() and RGMercUtils.SelfBuffCheck(spell)
                 end,
@@ -977,7 +977,7 @@ local _ClassConfig = {
                 name = "ParryProcBuff",
                 type = "Spell",
                 tooltip = Tooltips.ParryProcBuff,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return not castWSU() and RGMercUtils.SelfBuffCheck(spell)
                 end,
@@ -986,7 +986,7 @@ local _ClassConfig = {
                 name = "Hunt",
                 type = "Spell",
                 tooltip = Tooltips.Hunt,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return not castWSU() and RGMercUtils.SelfBuffCheck(spell)
                 end,
@@ -995,16 +995,16 @@ local _ClassConfig = {
                 name = "Eyes",
                 type = "Spell",
                 tooltip = Tooltips.Eyes,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
-                    return not castWSU() and RGMercUtils.SelfBuffCheck(spell) and not RGMercUtils.BuffActiveByID(spell.ID()) and not RGMercUtils.GetSetting('DoMask')
+                    return not castWSU() and RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.NeedBuffByID(spell.ID()) and not RGMercUtils.GetSetting('DoMask')
                 end,
             },
             {
                 name = "GroupPredatorBuff",
                 type = "Spell",
                 tooltip = Tooltips.GroupPredatorBuff,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.SpellStacksOnMe(spell)
                 end,
@@ -1013,34 +1013,34 @@ local _ClassConfig = {
                 name = "ShoutBuff",
                 type = "Spell",
                 tooltip = Tooltips.ShoutBuff,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
-                    return RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.SpellStacksOnMe(spell) and not RGMercUtils.BuffActiveByName("Shared " .. spell.Name())
+                    return RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.SpellStacksOnMe(spell) and RGMercUtils.NeedBuffByName("Shared " .. spell.Name())
                 end,
             },
             {
                 name = "GroupStrengthBuff",
                 type = "Spell",
                 tooltip = Tooltips.GroupStrengthBuff,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
-                    return RGMercUtils.SelfBuffCheck(spell) and not RGMercUtils.BuffActiveByName("Shared " .. spell.Name()) and RGMercUtils.SpellStacksOnMe(spell)
+                    return RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.NeedBuffByName("Shared " .. spell.Name()) and RGMercUtils.SpellStacksOnMe(spell)
                 end,
             },
             {
                 name = "Rathe",
                 type = "Spell",
                 tooltip = Tooltips.Rathe,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
-                    return RGMercUtils.SelfBuffCheck(spell) and not RGMercUtils.BuffActiveByName("Shared " .. spell.Name())
+                    return RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.NeedBuffByName("Shared " .. spell.Name())
                 end,
             },
             {
                 name = "GroupEnrichmentBuff",
                 type = "Spell",
                 tooltip = Tooltips.GroupEnrichmentBuff,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell)
                 end,
@@ -1049,7 +1049,7 @@ local _ClassConfig = {
                 name = "Coat",
                 type = "Spell",
                 tooltip = Tooltips.Coat,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.SpellStacksOnMe(spell)
                 end,
@@ -1058,7 +1058,7 @@ local _ClassConfig = {
                 name = "Mask",
                 type = "Spell",
                 tooltip = Tooltips.Mask,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.GetSetting('DoMask') and RGMercUtils.SpellStacksOnMe(spell)
                 end,
@@ -1067,7 +1067,7 @@ local _ClassConfig = {
                 name = "FireFist",
                 type = "Spell",
                 tooltip = Tooltips.FireFist,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell)
                 end,
@@ -1076,7 +1076,7 @@ local _ClassConfig = {
                 name = "DsBuff",
                 type = "Spell",
                 tooltip = Tooltips.DsBuff,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.SpellStacksOnMe(spell)
                 end,
@@ -1085,7 +1085,7 @@ local _ClassConfig = {
                 name = "SkinLike",
                 type = "Spell",
                 tooltip = Tooltips.SkinLike,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.SpellStacksOnMe(spell)
                 end,
@@ -1094,7 +1094,7 @@ local _ClassConfig = {
                 name = "MoveSpells",
                 type = "Spell",
                 tooltip = Tooltips.MoveSpells,
-                active_cond = function(self, spell) return RGMercUtils.GetSetting('DoRunSpeed') and RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return RGMercUtils.GetSetting('DoRunSpeed') and not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell)
                 end,
@@ -1103,7 +1103,7 @@ local _ClassConfig = {
                 name = "AgiBuff",
                 type = "Spell",
                 tooltip = Tooltips.AgiBuff,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell)
                 end,
@@ -1112,7 +1112,7 @@ local _ClassConfig = {
                 name = "Cloak",
                 type = "Spell",
                 tooltip = Tooltips.Cloak,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell)
                 end,
@@ -1121,7 +1121,7 @@ local _ClassConfig = {
                 name = "Veil",
                 type = "Spell",
                 tooltip = Tooltips.Veil,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell)
                     return RGMercUtils.SelfBuffCheck(spell)
                 end,
@@ -1177,7 +1177,7 @@ local _ClassConfig = {
                 name = "Rathe",
                 type = "Spell",
                 tooltip = Tooltips.Rathe,
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.RankName.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.RankName.ID()) end,
                 cond = function(self, spell, target)
                     RGMercUtils.SetTarget(target.ID() or 0)
                     return RGMercUtils.SpellStacksOnTarget(spell) and RGMercUtils.TargetNeedsBuff(spell) and RGMercUtils.TargetNeedsBuffByName("Shared " .. spell.Name())
@@ -1344,7 +1344,7 @@ local _ClassConfig = {
                 type = "Spell",
                 tooltip = Tooltips.Fireboon,
                 cond = function(self, spell)
-                    return RGMercUtils.DetSpellCheck(spell) and not RGMercUtils.BuffActiveByName("FireboonBuff")
+                    return RGMercUtils.DetSpellCheck(spell) and RGMercUtils.NeedBuffByName("FireboonBuff")
                 end,
             },
             {
@@ -1352,7 +1352,7 @@ local _ClassConfig = {
                 type = "Spell",
                 tooltip = Tooltips.Iceboon,
                 cond = function(self, spell)
-                    return RGMercUtils.DetSpellCheck(spell) and not RGMercUtils.BuffActiveByName("IceboonBuff")
+                    return RGMercUtils.DetSpellCheck(spell) and RGMercUtils.NeedBuffByName("IceboonBuff")
                 end,
             },
             {

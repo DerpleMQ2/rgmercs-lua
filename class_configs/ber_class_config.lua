@@ -712,7 +712,7 @@ return {
                 name = "FrenzyBoost",
                 type = "Disc",
                 cond = function(self, discSpell)
-                    return not RGMercUtils.BuffActive(discSpell)
+                    return RGMercUtils.NeedBuff(discSpell)
                 end,
             },
             {

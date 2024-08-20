@@ -850,7 +850,7 @@ return {
                 type = "AA",
                 cond = function(self, aaName)
                     return mq.TLO.Me.Level() < 80 and RGMercUtils.AAReady(aaName) and not RGMercUtils.SongActiveByName('Group Armor of the Inquisitor') and
-                        not RGMercUtils.SongActiveByName('Armor of the Inquisitor') and not RGMercUtils.BuffActiveByName('Spire of Chivalry')
+                        not RGMercUtils.SongActiveByName('Armor of the Inquisitor') and RGMercUtils.NeedBuffByName('Spire of Chivalry')
                 end,
             },
             {
@@ -1020,7 +1020,7 @@ return {
                 name = "Force of Disruption",
                 type = "AA",
                 cond = function(self, aaName)
-                    return (mq.TLO.Me.AltAbility(aaName).Rank() or 0) > 7 and not RGMercUtils.BuffActiveByName("Knight's Yaulp") and
+                    return (mq.TLO.Me.AltAbility(aaName).Rank() or 0) > 7 and RGMercUtils.NeedBuffByName("Knight's Yaulp") and
                         RGMercUtils.GetTargetDistance() < 30 and RGMercUtils.AAReady(aaName)
                 end,
             },
@@ -1218,7 +1218,7 @@ return {
                 name = "Disruptive Persecution",
                 type = "AA",
                 cond = function(self, aaName)
-                    return RGMercUtils.AAReady(aaName) and mq.TLO.Me.AltAbility(aaName).Rank() >= 3 and not RGMercUtils.BuffActiveByName("Knight's Yaulp")
+                    return RGMercUtils.AAReady(aaName) and mq.TLO.Me.AltAbility(aaName).Rank() >= 3 and RGMercUtils.NeedBuffByName("Knight's Yaulp")
                 end,
             },
             {
@@ -1307,19 +1307,19 @@ return {
             {
                 name = "Brells",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.GetSetting('DoBrells') end,
             },
             {
                 name = "Aego",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) and not RGMercUtils.GetSetting('DoDruid') end,
             },
             {
                 name = "Symbol",
                 type = "Spell",
-                active_cond = function(self, spell) return RGMercUtils.BuffActiveByID(spell.ID()) end,
+                active_cond = function(self, spell) return not RGMercUtils.NeedBuffByID(spell.ID()) end,
                 cond = function(self, spell) return RGMercUtils.SelfBuffCheck(spell) and RGMercUtils.GetSetting('DoDruid') end,
             },
         },

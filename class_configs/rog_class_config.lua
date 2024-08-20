@@ -429,7 +429,7 @@ return {
                 cond = function(self, _)
                     local poisonItem = mq.TLO.FindItem(RGMercUtils.GetSetting('PoisonName'))
                     return poisonItem and poisonItem() and poisonItem.Timer.TotalSeconds() == 0 and
-                        not RGMercUtils.BuffActiveByID(poisonItem.Spell.ID())
+                        RGMercUtils.NeedBuffByID(poisonItem.Spell.ID())
                 end,
             },
         },
@@ -475,12 +475,12 @@ return {
                 type = "ClickyItem",
                 active_cond = function(self, _)
                     local poisonItem = mq.TLO.FindItem(RGMercUtils.GetSetting('PoisonName'))
-                    return poisonItem and poisonItem() and RGMercUtils.BuffActiveByID(poisonItem.Spell.ID() or 0)
+                    return poisonItem and poisonItem() and not RGMercUtils.NeedBuffByID(poisonItem.Spell.ID() or 0)
                 end,
                 cond = function(self, _)
                     local poisonItem = mq.TLO.FindItem(RGMercUtils.GetSetting('PoisonName'))
                     return mq.TLO.Me.ItemReady(RGMercUtils.GetSetting('PoisonName'))() and
-                        not RGMercUtils.BuffActiveByID(poisonItem.Spell.ID())
+                        RGMercUtils.NeedBuffByID(poisonItem.Spell.ID())
                 end,
             },
             {
